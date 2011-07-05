@@ -55,8 +55,7 @@ Remotely.Action.prototype = {
 	
 	fire: function(args) {
 
-		var request = this._generate(args),
-		    self = this;
+		var request = this._generate(args);
 
 		$.ajax({
 			url: request.uri,
