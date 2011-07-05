@@ -20,8 +20,7 @@ Remotely.Object.prototype = {
 	},
 
 	_to_json: function() {
-		var collapsed = this._collapse();
-		return JSON.stringify(collapsed);
+		return JSON.stringify(this._collapse());
 	},
 	
 	_collapse: function() {
