@@ -65,7 +65,7 @@ Remotely.Action.prototype = {
 			success: request.success,
 			error: request.error
 		});
-	},
+	}, q
 
 	_generate: function(args) {
 
