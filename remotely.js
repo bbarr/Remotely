@@ -9,10 +9,8 @@ Remotely.Object = function(src) {
 Remotely.Object.prototype = {
 
 	register: function(data) {
-		var key, action;
-		for (key in data) {
-			action = new Remotely.Action(this, key, data[key]);
-			this[key] = action.fire;
+		for (var key in data) {
+			this[key] = new Remotely.Action(this, key, data[key]).fire;
 		}
 	},
 	
