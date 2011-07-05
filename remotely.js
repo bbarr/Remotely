@@ -70,10 +70,10 @@ Remotely.Action.prototype = {
 
 	_generate: function(args) {
 
-		var request = {};
-
-		request.params = [].slice.call(args, 0);
-		request.data = (this.params.length < request.params.length) ? request.params.pop() : {};
+		var request = {
+			params: [].slice.call(args, 0),
+			data: (this.params.length < request.params.length) ? request.params.pop() : {},
+		};
 
 		this._decorate_uri(request);
 		this._decorate_callbacks(request);
