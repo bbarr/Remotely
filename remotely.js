@@ -14,9 +14,8 @@ Remotely.Object.prototype = {
 		}
 	},
 	
-	_extend: function(src) {
-		for (var key in src) this[key] = src[key];
-		return this;
+	_extend: function(src) { 
+		for (var key in src) this[key] = src[key] 
 	},
 
 	_to_json: function() {
