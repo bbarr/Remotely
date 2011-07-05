@@ -3,7 +3,6 @@ var Remotely = { count: 0 };
 
 Remotely.Object = function(src) {
 	this.keys = [];
-	this._actions = [];
 	this._remotely_id = ++Remotely.count;
 	this._extend(src);
 };
@@ -15,7 +14,6 @@ Remotely.Object.prototype = {
 		for (key in data) {
 			action = new Remotely.Action(this, key, data[key]);
 			this[key] = action.fire;
-			this.actions.push(action);
 		}
 	},
 	
