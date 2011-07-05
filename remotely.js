@@ -1,9 +1,8 @@
 
-var Remotely = { count: 0 };
+var Remotely = {};
 
 Remotely.Object = function(src) {
 	this.keys = [];
-	this._remotely_id = ++Remotely.count;
 	this._extend(src);
 };
 
