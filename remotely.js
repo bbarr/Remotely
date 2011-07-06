@@ -2,15 +2,48 @@ var Remotely = {};
 
 Remotely.Object = function(src) {
 	this.keys = [];
+	this.subscriptions = { '*': [] };
 	this._extend(src);
 };
 
 Remotely.Object.prototype = {
 
-	register: function(data) {
-		for (var key in data) {
-			this[key] = new Remotely.Action(this, key, data[key]).fire;
+	route: function(data) {
+	    
+	    var self = this,
+	        action, key;
+	    
+		for (key in data) {
+		    
+			this[key] = function() {
+			    action = new Remotely.Action(self, key, data[key]);
+			    action.fire(arguments);
+		    }
 		}
+	},
+    
+    subscribe: function(topic, fn, scope) {
+
+		if (typeof topic === 'function') {
+			scope = fn;
+			fn = topic;
+			topic = '*';
+		}
+
+		fn.scope = scope || this;
+		(this.subscriptions[topic] || (this.subscriptions[topic] = [])).push(fn);
+	},
+
+	publish: function(topic, data) {
+
+		var subs = (this.subscriptions[topic] || []).concat(this.subscriptions['*']),
+		    nss = topic.split('.'),
+		    len = subs.length,
+	        i = 0;
+
+		while (nss[0]) subs.concat(this.subscriptions[nss.shift()] || []);
+
+		for (; i < len; i++) subs[i].call(subs[i].scope || this, data, this);
 	},
 	
 	_extend: function(src) { 
@@ -24,7 +57,7 @@ Remotely.Object.prototype = {
 	_collapse: function() {
 		
 		var data = {}, 
-		    keys = this.keys, 
+		    keys = this.keys,
 		    key, prop;
 		
 		for (key in this) {
@@ -68,10 +101,11 @@ Remotely.Action.prototype = {
 
 	_generate: function(args) {
 
-		var request = {
-			params: [].slice.call(args, 0),
-			data: (this.params.length < request.params.length) ? request.params.pop() : {},
-		};
+		var request = {};
+		
+		request.params = [].slice.call(args, 0);
+		request.data = (this.params.length < request.params.length) ? request.params.pop() : {};
+        request.method = this.method;
 
 		this._decorate_uri(request);
 		this._decorate_callbacks(request);

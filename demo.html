@@ -10,16 +10,14 @@
 	
 	<script type="text/javascript">
 	
-		var test = {
+		var test = new Remotely.Object({
 			a: 1,
 			b: 'two'
-		}
+		});
 		
-		remotely.decorate(test);
+		test.route({ fetch: 'GET /README' });
 		
-		test.route('save', 'GET', 'README');
-		
-		test.get_something();
+		test.fetch();
 	
 	</script>
 </body>
