@@ -14,12 +14,15 @@ Remotely.Object.prototype = {
 	        action, key;
 	    
 		for (key in data) {
-		    
 			this[key] = function() {
 			    action = new Remotely.Action(self, key, data[key]);
 			    action.fire(arguments);
 		    }
 		}
+	},
+    
+    to_json: function() {
+		return JSON.stringify(this._collapse());
 	},
     
     subscribe: function(topic, fn, scope) {
@@ -48,10 +51,6 @@ Remotely.Object.prototype = {
 	
 	_extend: function(src) { 
 		for (var key in src) this[key] = src[key] 
-	},
-
-	_to_json: function() {
-		return JSON.stringify(this._collapse());
 	},
 	
 	_collapse: function() {
